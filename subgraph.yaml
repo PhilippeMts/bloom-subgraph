@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Account
-    network: mainnet
+    network: rinkeby
     source:
-      address: '0xB0f6905fa74aD35C0Dc43FF60A2250488735dfC5'
+      address: '0xAe89E1c6E82e3cd602EEa08A1C40cAf110dB9295'
       abi: AccountRegistryLogic
-      startBlock: 6822879
+      startBlock: 3433076
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -28,11 +28,11 @@ dataSources:
       file: ./mappings/accountRegistry.ts
   - kind: ethereum/contract
     name: Attestation
-    network: mainnet
+    network: rinkeby
     source:
-      address: '0xceec7aAA57e3a77c73A9954b9b7D5B32ab688318'
+      address: '0x313a0DC2A954F8D196CE72FEf175f4403B7121Ca'
       abi: AttestationLogic
-      startBlock: 6822938
+      startBlock: 3433077
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
