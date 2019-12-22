@@ -1,5 +1,6 @@
 {
   "name": "bloom-subgraph",
+  "homepage": "https://philippemts.github.io/bloom-subgraph",
   "version": "0.1.0",
   "scripts": {
     "create": "graph create PhilippeMts/bloom --node https://api.thegraph.com/deploy/",
@@ -7,17 +8,35 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy PhilippeMts/bloom --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-local": "graph deploy PhilippeMts/bloom --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
+    "deploy-local": "graph deploy PhilippeMts/bloom --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "react-eject": "react-scripts eject",
+    "react-deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.16.0",
-    "@graphprotocol/graph-ts": "^0.16.0"
+    "@graphprotocol/graph-ts": "^0.16.0",
+    "gh-pages": "^2.1.1"
   },
   "dependencies": {
+    "apollo-boost": "^0.1.28",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "truffle": "^5.0.4",
     "truffle-contract": "^4.0.5",
-    "truffle-hdwallet-provider": "^1.0.4"
-  }
+    "truffle-hdwallet-provider": "^1.0.4",
+    "graphql": "^14.1.1",
+    "react": "^16.8.2",
+    "react-apollo": "^2.4.1",
+    "react-dom": "^16.8.2",
+    "react-scripts": "2.1.5"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
