@@ -1,27 +1,28 @@
 specVersion: 0.0.2
-description: Gravatar for Ethereum
-repository: https://github.com/graphprotocol/example-subgraph
+description: Bloom is an end-to-end protocol for decentralized identity and credit scoring. The protocol's core functionality is handled with Ethereum smart contracts and uses L2 scaling solutions such as state channels to ensure fast and cheap operations on the blockchain.
+repository: https://github.com/PhilippeMts/bloom-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Gravity
+    name: Account
     network: mainnet
     source:
-      address: '0x2E645469f354BB4F5c8a05B3b30A929361cf77eC'
-      abi: Gravity
+      address: '0xB0f6905fa74aD35C0Dc43FF60A2250488735dfC5'
+      abi: AccountRegistryLogic
+      startBlock: 6822879
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - Gravatar
+        - Account
       abis:
-        - name: Gravity
-          file: ./abis/Gravity.json
+        - name: AccountRegistryLogic
+          file: ./abis/AccountRegistryLogic.json
       eventHandlers:
-        - event: NewGravatar(uint256,address,string,string)
-          handler: handleNewGravatar
-        - event: UpdatedGravatar(uint256,address,string,string)
-          handler: handleUpdatedGravatar
+        - event: AddressLinked(indexed address,indexed address,indexed uint256)
+          handler: handleAddressLinked
+        - event: AddressUnlinked(indexed address)
+          handler: handleAddressUnlinked
       file: ./src/mapping.ts

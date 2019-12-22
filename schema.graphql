@@ -1,6 +1,24 @@
-type Gravatar @entity {
+type BloomAccount @entity {
+  "TODO comment here"
   id: ID!
-  owner: Bytes!
-  displayName: String!
-  imageUrl: String!
+  nbActiveAddresses: Int!
+  addresses: [BloomAddress!]! @derivedFrom(field: "account")
+}
+
+type BloomAddress @entity {
+  "TODO comment here"
+  id: ID!
+  account: BloomAccount
+  address: String!
+  history: [BloomAddressHistoryItem!]! @derivedFrom(field: "address")
+}
+
+type BloomAddressHistoryItem @entity {
+  "TODO comment here"
+  id: ID!
+  linkID: String!
+  address: BloomAddress!
+  createdDuringMigration: Boolean!
+  creationBlock: BigInt!
+  deletionBlock: BigInt
 }
