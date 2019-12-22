@@ -1,3 +1,35 @@
+####################
+# AttestationLogic #
+####################
+
+interface Identity {
+  id: ID!
+  attestations: [Attestation!]!
+}
+
+type User implements Identity @entity {
+  id: ID!
+  attestations: [Attestation!]! @derivedFrom(field: "subject")
+}
+
+type Attester implements Identity @entity {
+  id: ID!
+  attestations: [Attestation!]! @derivedFrom(field: "attester")
+}
+
+type Attestation @entity {
+  id: ID!
+  subject: User!
+  attester: Attester!
+  requester: Bytes!,
+  dataHash: Bytes!
+  createdDuringMigration: Boolean!
+}
+
+########################
+# AccountRegistryLogic #
+########################
+
 type BloomAccount @entity {
   "TODO comment here"
   id: ID!
@@ -6,7 +38,7 @@ type BloomAccount @entity {
 }
 
 type BloomAddress @entity {
-  "TODO comment here"
+  "TODO merge w/ User or BloomIdentity and comment"
   id: ID!
   account: BloomAccount
   address: String!

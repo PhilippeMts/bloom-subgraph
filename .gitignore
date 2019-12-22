@@ -74,3 +74,4 @@ typings/
 # miscellaneous
 build/
 generated/
+.idea/

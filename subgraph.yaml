@@ -26,3 +26,23 @@ dataSources:
         - event: AddressUnlinked(indexed address)
           handler: handleAddressUnlinked
       file: ./mappings/accountRegistry.ts
+  - kind: ethereum/contract
+    name: Attestation
+    network: mainnet
+    source:
+      address: '0xceec7aAA57e3a77c73A9954b9b7D5B32ab688318'
+      abi: AttestationLogic
+      startBlock: 6822938
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Attestation
+      abis:
+        - name: AttestationLogic
+          file: ./abis/AttestationLogic.json
+      eventHandlers:
+        - event: TraitAttested(address,address,address,bytes32)
+          handler: handleTraitAttested
+      file: ./mappings/attestationLogic.ts
