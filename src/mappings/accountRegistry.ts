@@ -2,12 +2,12 @@ import {
   AccountRegistryLogic,
   AddressLinked,
   AddressUnlinked
-} from "../generated/Account/AccountRegistryLogic";
+} from "../../generated/Account/AccountRegistryLogic";
 import {
   BloomAccount,
   BloomAddress,
   BloomAddressHistoryItem
-} from "../generated/schema";
+} from "../../generated/schema";
 
 export function handleAddressLinked(event: AddressLinked): void {
   // get parameters from event

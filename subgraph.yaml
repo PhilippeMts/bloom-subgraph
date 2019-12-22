@@ -25,4 +25,4 @@ dataSources:
           handler: handleAddressLinked
         - event: AddressUnlinked(indexed address)
           handler: handleAddressUnlinked
-      file: ./src/mapping.ts
+      file: ./src/mappings/accountRegistry.ts
