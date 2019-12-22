@@ -1,7 +1,8 @@
-import React, { Component } from "react";
-import ApolloClient, { InMemoryCache } from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
+import React, {Component} from "react";
+import { ApolloProvider } from '@apollo/react-hooks';
+import ApolloClient, {InMemoryCache} from "apollo-boost";
 import "./App.css";
+import MyQuery from "./components/MyQuery";
 
 if (!process.env.REACT_APP_GRAPHQL_ENDPOINT) {
   throw new Error(
@@ -18,7 +19,7 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <div />
+        <MyQuery/>
       </ApolloProvider>
     );
   }
