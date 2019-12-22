@@ -18,7 +18,7 @@ export function handleAddressLinked(event: AddressLinked): void {
   let accountRegistryLogic = AccountRegistryLogic.bind(event.address);
   let initializing = accountRegistryLogic.initializing();
 
-  // get or create account object
+  // get or create Account object
   let account = BloomAccount.load(accountID);
   if (account == null) {
     account = new BloomAccount(accountID);
