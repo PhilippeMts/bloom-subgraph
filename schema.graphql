@@ -35,4 +35,15 @@ type BloomAddress @entity {
   identity: Identity!
   subjectOf: [Attestation!]! @derivedFrom(field: "subjectAddress")
   attesterOf: [Attestation!]! @derivedFrom(field: "attesterAddress")
+  linksHistory: [LinkHistoryItem!]! @derivedFrom(field: "address")
+}
+
+type LinkHistoryItem @entity {
+  "A BloomAddress can theoretically be linked to different identities, one after nother. LinkHistoryItems could help trace back this history. They were temporarily removed from mappings though to improve performance."
+  id: ID!
+  address: BloomAddress!
+  linkID: BigInt!
+  createdDuringMigration: Boolean!
+  creationBlock: BigInt!
+  deletionBlock: BigInt
 }
