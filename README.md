@@ -12,11 +12,13 @@ We can see that three attesters (green nodes) attested some traits for a majorit
 
 Only a few users received attestations from more than one attester.
 
+One of the attester focuses the great majority of all attestations while two other attesters concentrated a larger number of attestations on much fewer users (links of bigger width represent a large number of attestations between two identities). 
+
 Users' BLT balance does not seem to be bound to their usage of the Bloom platform.
 Indeed some users with a big balance (bigger blue nodes) received attestations while others did not.
 
 The main purpose of the dynamic creation of nodes and links is to paginate queries and make it possible to load and display a large number of attestations without a detrimental initial loading time.
-It does not reflect any timeline of on-chain events.  
+It does not reflect any timeline of on-chain events.
 
 ## Subgraph
 

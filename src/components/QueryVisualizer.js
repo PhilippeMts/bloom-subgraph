@@ -1,7 +1,7 @@
 import React from "react";
 import ForceGraph2D from "react-force-graph-2d";
 import bigInt from "big-integer";
-import {GraphQLClient} from "graphql-request";
+import { GraphQLClient } from "graphql-request";
 import Loader from "react-loader-spinner";
 
 const client = new GraphQLClient(process.env.REACT_APP_GRAPHQL_ENDPOINT);
@@ -56,6 +56,26 @@ const getVisibleLinks = (nodes, links) => {
     }
   }
   return visibleLinks;
+};
+
+const concatLinksOnWidth = links => {
+  const newLinkIds = {};
+  const newLinks = [];
+  for (const l of links) {
+    const key = `${l.source}-${l.target}`;
+    let idx = newLinkIds[key];
+    if (idx) {
+      newLinks[idx].width += 1;
+    } else {
+      idx = newLinks.push({
+        source: l.source,
+        target: l.target,
+        width: 1
+      });
+      newLinkIds[key] = idx - 1;
+    }
+  }
+  return newLinks;
 };
 
 const QueryVisualizer = () => {
@@ -128,7 +148,10 @@ const QueryVisualizer = () => {
     fetchMoreAttestations([]);
   }
 
-  const graphData = { nodes, links: getVisibleLinks(nodes, links) };
+  const graphData = {
+    nodes,
+    links: concatLinksOnWidth(getVisibleLinks(nodes, links))
+  };
   if (!nodes.length)
     return (
       <div className={"centeringWrapper"}>
@@ -138,6 +161,7 @@ const QueryVisualizer = () => {
   return (
     <ForceGraph2D
       graphData={graphData}
+      linkWidth={"width"}
       linkDirectionalParticles={2}
       linkDirectionalParticleWidth={0.64}
     />
