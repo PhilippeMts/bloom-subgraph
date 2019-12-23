@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/bloom-subgraph/static/js/runtime~main.3da47861.js"
   },
   {
-    "revision": "ec66071f65429b5f30e1",
-    "url": "/bloom-subgraph/static/js/main.ec66071f.chunk.js"
+    "revision": "6a166054b35b851e4e07",
+    "url": "/bloom-subgraph/static/js/main.6a166054.chunk.js"
   },
   {
     "revision": "2b9436afb6ee901a36ad",
     "url": "/bloom-subgraph/static/js/2.2b9436af.chunk.js"
   },
   {
-    "revision": "ec66071f65429b5f30e1",
+    "revision": "6a166054b35b851e4e07",
     "url": "/bloom-subgraph/static/css/main.7620903f.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/bloom-subgraph/static/css/2.f79fdda2.chunk.css"
   },
   {
-    "revision": "2d533ef6c000f83c1bbf836fecbe55a8",
+    "revision": "f350fa38913d14eb9321442cce090d41",
     "url": "/bloom-subgraph/index.html"
   }
 ];
