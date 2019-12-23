@@ -30,6 +30,7 @@
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-force-graph-2d": "^1.13.6",
+    "react-loader-spinner": "^3.1.5",
     "react-scripts": "2.1.5",
     "truffle": "^5.0.4",
     "truffle-contract": "^4.0.5",
