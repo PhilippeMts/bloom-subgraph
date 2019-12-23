@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/bloom-subgraph/precache-manifest.84d265f5bc91db500fadf532fb925320.js"
+  "/bloom-subgraph/precache-manifest.4d43fef048642c4d5c7190d3d2599a0c.js"
 );
 
 workbox.clientsClaim();
