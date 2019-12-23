@@ -1,104 +1,60 @@
-import {
-  AccountRegistryLogic,
-  AddressLinked,
-  AddressUnlinked
-} from "../generated/Account/AccountRegistryLogic";
-import {
-  BloomAccount,
-  BloomAddress,
-  BloomAddressHistoryItem
-} from "../generated/schema";
+import {AddressLinked, AddressUnlinked} from "../generated/Account/AccountRegistryLogic";
+import {Identity} from "../generated/schema";
+import {getOrCreateIdentityAndAddress, transferAttestations} from "./util";
+import {BigInt} from "@graphprotocol/graph-ts/index";
 
 export function handleAddressLinked(event: AddressLinked): void {
   // get parameters from event
-  let blockNumber = event.block.number;
-  let accountID = event.params.linkId.toHex();
+  let currentAddressString = event.params.currentAddress.toHexString();
+  let newAddressString = event.params.newAddress.toHexString();
+  let randomID =
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString();
 
-  // read the contract for additional state variables
-  let accountRegistryLogic = AccountRegistryLogic.bind(event.address);
-  let initializing = accountRegistryLogic.initializing();
+  // get or create Identity and Address objects for currentAddress
+  let data = getOrCreateIdentityAndAddress(currentAddressString, randomID + "-0");
+  let currentIdentity = data.identity;
 
-  // get or create Account object
-  let account = BloomAccount.load(accountID);
-  if (account == null) {
-    account = new BloomAccount(accountID);
-    account.nbActiveAddresses = 0;
-  }
+  // get or create Identity and Address objects for newAddress
+  data = getOrCreateIdentityAndAddress(newAddressString, randomID + "-1");
+  let newIdentity = data.identity;
+  let newAddress = data.address;
 
-  // handle Address objects
-  for (let i = 0; i < 2; i++) {
-    let addressString: string;
-    addressString =
-      i < 1
-        ? event.params.currentAddress.toHexString()
-        : event.params.newAddress.toHexString();
-    // load Address object
-    let address = BloomAddress.load(addressString);
-    if (address == null) {
-      // create Address object
-      address = new BloomAddress(addressString);
-      address.address = addressString;
-    }
+  // transfer all attestations from newAddress and update balance
+  transferAttestations(newIdentity, currentIdentity);
+  currentIdentity.bltBalance = currentIdentity.bltBalance.plus(newIdentity.bltBalance);
+  currentIdentity.save();
 
-    if (address.account == null) {
-      // create new BloomAddressHistoryItem object
-      let addressHistoryItemID = createAddressHistoryItemID(
-        addressString,
-        event
-      );
-      let addressHistoryItem = new BloomAddressHistoryItem(
-        addressHistoryItemID
-      );
-      addressHistoryItem.linkID = accountID;
-      addressHistoryItem.address = addressString;
-      addressHistoryItem.createdDuringMigration = initializing;
-      addressHistoryItem.creationBlock = blockNumber;
-      addressHistoryItem.save();
-      // update active field in BloomAddress object
-      address.account = accountID;
-      // update nbActiveAddresses field in BloomAccount object
-      account.nbActiveAddresses += 1;
-    }
-    address.save();
-  }
-  account.save();
+  // disable old identity for newAddress
+  newIdentity.disabled = true;
+  newIdentity.unset("bltBalance");
+  newIdentity.save();
+
+  // update newAddress identity field
+  newAddress.identity = currentIdentity.id;
+  newAddress.save();
 }
 
 export function handleAddressUnlinked(event: AddressUnlinked): void {
   // get parameters from event
-  let blockNumber = event.block.number;
   let addressString = event.params.addressToRemove.toHexString();
-  // load BloomAddress object
-  let address = BloomAddress.load(addressString);
-  if (address == null) return;
-  let addressHistory = address.history;
-  for (let i = 0; i < addressHistory.length; i++) {
-    // load BloomAddressHistoryItem object
-    let addressHistoryItem = BloomAddressHistoryItem.load(addressHistory[i]);
-    if (addressHistoryItem.deletionBlock == null) continue;
-    addressHistoryItem.deletionBlock = blockNumber;
-    addressHistoryItem.save();
-    // update BloomAddress object
-    address.unset("account");
-    address.save();
-    // load BloomAccount object
-    let account = BloomAccount.load(addressHistoryItem.linkID);
-    if (account == null) return;
-    // update BloomAccount object
-    account.nbActiveAddresses -= 1;
-    account.save();
-  }
-}
+  let randomID =
+      event.transaction.hash.toHex() + "-" + event.logIndex.toString();
 
-function createAddressHistoryItemID(
-  addressString: string,
-  event: AddressLinked
-): string {
-  return (
-    addressString +
-    "-" +
-    event.transaction.hash.toHex() +
-    "-" +
-    event.logIndex.toString()
-  );
+  // load BloomAddress object
+  let data = getOrCreateIdentityAndAddress(addressString, randomID);
+  let oldIdentity = data.identity;
+  let address = data.address;
+
+  // create new Identity object
+  let newIdentity = new Identity(randomID);
+  newIdentity.bltBalance = BigInt.fromI32(0);
+  newIdentity.disabled = false;
+  newIdentity.save();
+
+  // transfer all attestations from newAddress and update balance
+  transferAttestations(oldIdentity, newIdentity);
+  newIdentity.bltBalance = newIdentity.bltBalance.plus(address.bltBalance);
+  newIdentity.save();
+  oldIdentity.bltBalance = oldIdentity.bltBalance.minus(address.bltBalance);
+  oldIdentity.save();
 }

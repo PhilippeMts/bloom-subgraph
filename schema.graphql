@@ -2,25 +2,23 @@
 # AttestationLogic #
 ####################
 
-interface Identity {
+type Identity @entity {
+  "Bloom Identity/Account"
   id: ID!
-  attestations: [Attestation!]!
-}
-
-type User implements Identity @entity {
-  id: ID!
-  attestations: [Attestation!]! @derivedFrom(field: "subject")
-}
-
-type Attester implements Identity @entity {
-  id: ID!
-  attestations: [Attestation!]! @derivedFrom(field: "attester")
+  bltBalance: BigInt!
+  disabled: Boolean!
+  subjectOf: [Attestation!]! @derivedFrom(field: "subjectIdentity")
+  attesterOf: [Attestation!]! @derivedFrom(field: "attesterIdentity")
+  addresses: [BloomAddress!]! @derivedFrom(field: "identity")
 }
 
 type Attestation @entity {
+  "Bloom Attestation"
   id: ID!
-  subject: User!
-  attester: Attester!
+  subjectAddress: BloomAddress!
+  subjectIdentity: Identity!
+  attesterAddress: BloomAddress!
+  attesterIdentity: Identity!
   requester: Bytes!,
   dataHash: Bytes!
   createdDuringMigration: Boolean!
@@ -30,27 +28,11 @@ type Attestation @entity {
 # AccountRegistryLogic #
 ########################
 
-type BloomAccount @entity {
-  "TODO comment here"
-  id: ID!
-  nbActiveAddresses: Int!
-  addresses: [BloomAddress!]! @derivedFrom(field: "account")
-}
-
 type BloomAddress @entity {
-  "TODO merge w/ User or BloomIdentity and comment"
+  "Address that can be linked to others through an Identity"
   id: ID!
-  account: BloomAccount
-  address: String!
-  history: [BloomAddressHistoryItem!]! @derivedFrom(field: "address")
-}
-
-type BloomAddressHistoryItem @entity {
-  "TODO comment here"
-  id: ID!
-  linkID: String!
-  address: BloomAddress!
-  createdDuringMigration: Boolean!
-  creationBlock: BigInt!
-  deletionBlock: BigInt
+  bltBalance: BigInt!
+  identity: Identity!
+  subjectOf: [Attestation!]! @derivedFrom(field: "subjectAddress")
+  attesterOf: [Attestation!]! @derivedFrom(field: "attesterAddress")
 }

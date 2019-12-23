@@ -25,6 +25,7 @@
     "apollo-boost": "^0.1.28",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
+    "big-integer": "^1.6.48",
     "graphql": "^14.1.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",

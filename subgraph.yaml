@@ -5,28 +5,6 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Account
-    network: rinkeby
-    source:
-      address: '0xAe89E1c6E82e3cd602EEa08A1C40cAf110dB9295'
-      abi: AccountRegistryLogic
-      startBlock: 3433076
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Account
-      abis:
-        - name: AccountRegistryLogic
-          file: ./abis/AccountRegistryLogic.json
-      eventHandlers:
-        - event: AddressLinked(indexed address,indexed address,indexed uint256)
-          handler: handleAddressLinked
-        - event: AddressUnlinked(indexed address)
-          handler: handleAddressUnlinked
-      file: ./mappings/accountRegistry.ts
-  - kind: ethereum/contract
     name: Attestation
     network: rinkeby
     source:
@@ -38,6 +16,8 @@ dataSources:
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
+        - User
+        - Attester
         - Attestation
       abis:
         - name: AttestationLogic
@@ -46,3 +26,23 @@ dataSources:
         - event: TraitAttested(address,address,address,bytes32)
           handler: handleTraitAttested
       file: ./mappings/attestationLogic.ts
+  - kind: ethereum/contract
+    name: BloomToken
+    network: rinkeby
+    source:
+      address: '0x7D4A44f0c4Ba0386f7126D53bA8EddA70BE4797b'
+      abi: IERC20
+      startBlock: 2086275
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - User
+      abis:
+        - name: IERC20
+          file: ./abis/IERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./mappings/bloomToken.ts
