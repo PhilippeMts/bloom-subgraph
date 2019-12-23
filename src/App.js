@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import QueryVisualizer from "./components/QueryVisualizer";
 
 if (!process.env.REACT_APP_GRAPHQL_ENDPOINT) {
@@ -7,12 +7,6 @@ if (!process.env.REACT_APP_GRAPHQL_ENDPOINT) {
   );
 }
 
-class App extends Component {
-  render() {
-    return (
-        <QueryVisualizer/>
-    );
-  }
-}
+const App = () => <QueryVisualizer />;
 
 export default App;
